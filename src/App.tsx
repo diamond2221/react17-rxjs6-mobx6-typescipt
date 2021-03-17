@@ -1,23 +1,17 @@
-import React from 'react'
-import { renderRoutes, RouteConfig } from 'react-router-config'
-import './App.css'
-import Detail from './pages/detail'
-import Home from './pages/home/index'
+import React, { Component } from 'react'
+import DefaultLayout from '@/layouts/index'
+import './App.less'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-const routes: RouteConfig[] = [
-  {
-    path: '/home',
-    component: Home,
-  },
-  {
-    path: '/detail',
-    component: Detail
+export interface AppProps extends RouteComponentProps {}
+export class App extends Component<Readonly<AppProps>> {
+  render() {
+    return (
+      <div className='App'>
+        <DefaultLayout {...this.props}></DefaultLayout>
+      </div>
+    )
   }
-]
-
-function App(props: any) {
-  // const route = renderRoutes(routes)
-  return <div className='App'>{renderRoutes(routes)}</div>
 }
 
-export default App
+export default withRouter(App as any)

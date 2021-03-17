@@ -1,0 +1,65 @@
+.app-layout-wrapper {
+    height: 100vh;
+
+    &.is-collapsed {
+        .site-layout {
+            margin-left: 80px;
+        }
+    }
+
+    .site-layout-sider {
+        left: 0;
+        overflow: auto;
+        z-index: 1;
+        height: 100%;
+
+        .logo {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            img {
+                display: block;
+                height: 100%;
+            }
+        }
+    }
+
+    .site-layout {
+        margin-left: 200px;
+        transition: margin-left .2s;
+
+        .site-layout-background {
+            background: #fff;
+        }
+
+        .site-layout-header {
+            width: 100%;
+            z-index: 2;
+            display: flex;
+            box-shadow: 5px 6px 7px 0px #dfdfdf;
+            padding: 0;
+
+            .trigger {
+                padding: 0 24px;
+                font-size: 18px;
+                line-height: 64px;
+                cursor: pointer;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: #1890ff;
+                }
+            }
+        }
+
+        .site-layout-content {
+            min-height: calc(100vh - 95px);
+            margin: 15px;
+            margin-top: 80px;
+            box-sizing: border-box;
+        }
+    }
+
+}

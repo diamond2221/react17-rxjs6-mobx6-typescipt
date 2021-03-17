@@ -1,4 +1,5 @@
 const path = require('path')
+const CracoLessPlugin = require('craco-less');
 
 module.exports = {
     devServer: devServerConfig => {
@@ -25,5 +26,18 @@ module.exports = {
             '~': path.resolve(__dirname, './src'),
             'components': path.resolve(__dirname, './src/components')
         }
-    }
+    },
+    plugins: [
+        {
+            plugin: CracoLessPlugin,
+            options: {
+                lessLoaderOptions: {
+                    lessOptions: {
+                        modifyVars: {  },//不修改主题就注释掉这行
+                        javascriptEnabled: true,
+                    },
+                },
+            },
+        },
+    ]
 }
