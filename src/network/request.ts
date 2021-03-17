@@ -1,5 +1,6 @@
 import { Response } from '@/types/common'
 import { debounce, encrypt } from '@/utils/index'
+import { message as Message } from 'antd'
 import axios, {
     AxiosInstance,
     AxiosPromise,
@@ -7,6 +8,7 @@ import axios, {
     AxiosResponse,
     Canceler,
 } from 'axios'
+
 import { Observable } from 'rxjs'
 
 export const getCommonParams = (tenantid?: string) => {
@@ -183,10 +185,7 @@ const requestFail = (res: AxiosResponse<Response>): AxiosResponse<Response> => {
     return res
 }
 const deError = debounce((message: string) => {
-    // Message.error({
-    //     content: message,
-    //     duration: 5,
-    // })
+    Message.error(message, 5)
 })
 
 // 合并axios参数
