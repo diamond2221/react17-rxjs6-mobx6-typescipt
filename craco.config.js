@@ -1,5 +1,6 @@
 const path = require('path')
 const CracoLessPlugin = require('craco-less');
+const CracoAlias = require("craco-alias");
 
 module.exports = {
     devServer: devServerConfig => {
@@ -33,11 +34,23 @@ module.exports = {
             options: {
                 lessLoaderOptions: {
                     lessOptions: {
-                        modifyVars: {  },//不修改主题就注释掉这行
+                        modifyVars: {},//不修改主题就注释掉这行
                         javascriptEnabled: true,
                     },
                 },
             },
         },
+        {
+            plugin: CracoAlias,
+            options: {
+                source: "tsconfig",
+                // baseUrl SHOULD be specified
+                // plugin does not take it from tsconfig
+                baseUrl: "./src",
+                /* tsConfigPath should point to the file where "baseUrl" and "paths"
+                are specified*/
+                tsConfigPath: "./tsconfig.paths.json"
+            }
+        }
     ]
 }

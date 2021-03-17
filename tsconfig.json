@@ -22,11 +22,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
-    "paths": {
-      "@/*": ["src/*"]
-    }
   },
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.paths.json"
 }
