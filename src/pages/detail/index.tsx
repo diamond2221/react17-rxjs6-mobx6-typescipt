@@ -1,19 +1,17 @@
 import { SearchStorages } from '@/network/modules/storage'
-import { Input } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { from, Observable, of } from 'rxjs'
+import { Input, Button } from 'antd'
+import React, { memo, useEffect, useState } from 'react'
+import { BehaviorSubject, from, Observable, of, Subscriber } from 'rxjs'
 import {
-  concatAll,
+  debounceTime,
   delay,
-  map,
-  mergeAll,
-  mergeMap,
-  switchAll,
+  scan,
   switchMap,
+  //concatAll, map, mergeAll, mergeMap, switchAll,
 } from 'rxjs/operators'
+import "./com"
 
 const getData = (param: number) => {
-  console.log(param)
   return of(`return: ${param}`).pipe(delay(Math.random() * 1000))
 }
 
@@ -24,26 +22,40 @@ let sub$ = new Observable((subscribe) => {
   })
 })
 
-// console.log('before:  res')
-sub$.subscribe((res) => {
-  console.log(res, 'res')
-})
-// console.log('after:  res')
+// sub$.subscribe((res) => {
+//   console.log(res, 'res')
+// })
 
-from([1, 2, 3, 4, 5])
-  .pipe(switchMap((v) => getData(v)))
-  .subscribe((res) => {
-    console.log(res)
+from([1, 2, 3, 4, 5]).pipe(switchMap((v) => getData(v)))
+
+const source$ = new BehaviorSubject<number>(1)
+
+const sourceResult = source$.pipe(
+  debounceTime(200),
+  scan((acc, value) => {
+    const res = acc + 1
+    console.log(res, value)
+    return res
   })
+)
 
-export function Detail() {
+function Detail() {
   // console.log('name, detail')
   const [myName, setMyName] = useState('')
   const [myClass, setMyClass] = useState('')
+  // useEffect(() => {
+  //   console.log('hello: ', myName)
+  //   return () => {}
+  // }, [myName])
+
   useEffect(() => {
-    console.log('hello: ', myName)
-    return () => {}
-  }, [myName])
+    const subscription = sourceResult.subscribe((res) => {
+      console.log(res, ' res')
+    })
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [sourceResult])
 
   const changeMyName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setMyName(e.target.value)
@@ -53,9 +65,14 @@ export function Detail() {
     setMyClass(e.target.value)
   }
 
+  const clickHandle = (e) => {
+    source$.next(e)
+  }
+
   return (
     <div>
       <h2>detail page</h2>
+      <div className='btn' id='id'>ID - BTUTTON</div>
       <Input
         value={myName}
         placeholder='你的姓名'
@@ -66,8 +83,9 @@ export function Detail() {
         placeholder='你的班级'
         onChange={changeMyClass}
       ></Input>
+      <Button onClick={clickHandle}>点击这里，增加</Button>
     </div>
   )
 }
 
-export default Detail
+export default memo(Detail)
